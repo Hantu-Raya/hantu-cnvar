@@ -1,53 +1,172 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8">
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Deadlock gameinfo: Hantu's vs Sqooky vs CompyLock</title><style>
-:root{color-scheme:dark;--bg:#111418;--card:#1a1f26;--fg:#e6e9ee;--mut:#aab4c2;--line:#2a313b}
-body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.5 system-ui,Segoe UI,sans-serif}
-main{max-width:1100px;margin:auto;padding:24px}h1{margin:.2em 0}h2{margin-top:1.8em;border-bottom:1px solid var(--line);padding-bottom:4px}
-.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
-.card,figure{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:14px}
-.big{font-size:28px;font-weight:700}.mut,.hint{color:var(--mut)}.hint{font-size:13px}
-table{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums;font-size:14px}
-th,td{border-bottom:1px solid var(--line);padding:6px 8px;text-align:right;vertical-align:top}
-th:first-child,td:first-child{text-align:left}th{color:var(--mut);font-weight:600}
-.worse{color:#ff7a7a}.table-wrap{overflow-x:auto}.text{text-align:left}
-figure{margin:16px 0}figcaption{font-weight:600;margin-bottom:6px}svg{width:100%;height:auto}
-.lbl,.val{fill:var(--fg);font-size:13px}code{font-size:12.5px}a{color:#7fb0ff}a:focus-visible{outline:2px solid #7fb0ff}
-.sw{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px}li{margin:.3em 0}
-</style></head><body><main>
-<h1>Deadlock gameinfo benchmark: Hantu's vs Sqooky vs CompyLock</h1>
-<p class="mut">2026-10-12 · client 6774 · demo 110239551 from tick 138245 · 300 s per run · full restart per run · 1600×900 windowed</p>
-<div class="cards"><div class="card"><div class="mut">Hantu&#x27;s</div><div class="big" style="color:#5fd38d">101.8 FPS</div><div class="hint">baseline · 5.17 CPU cores</div></div><div class="card"><div class="mut">Sqooky 3.5.1</div><div class="big" style="color:#7fb0ff">91.2 FPS</div><div class="hint">-10.5% vs Hantu's · 5.61 CPU cores</div></div><div class="card"><div class="mut">CompyLock</div><div class="big" style="color:#f0a35e">88.5 FPS</div><div class="hint">-13.1% vs Hantu's · 5.67 CPU cores</div></div></div>
+<title>Hantu&#x27;s gameinfo vs Sqooky vs CompyLock: Deadlock FPS benchmark</title>
+<meta name="description" content="Hantu&#x27;s averaged 101.8 FPS, 11.7% more than Sqooky 3.5.1 and 15.1% more than CompyLock, on the same recorded match.">
+<meta property="og:title" content="Hantu&#x27;s gameinfo vs Sqooky vs CompyLock: Deadlock FPS benchmark">
+<meta property="og:description" content="Hantu&#x27;s averaged 101.8 FPS, 11.7% more than Sqooky 3.5.1 and 15.1% more than CompyLock, on the same recorded match.">
+<meta property="og:type" content="article">
+<meta name="theme-color" content="#0e1013">
+<style>
+:root{
+  color-scheme:dark light;
+  --bg:#0e1013;--panel:#15181d;--line:#262b33;--fg:#e8eaed;--mut:#9aa3ae;--faint:#5c6570;
+  --a:#3ddc97;--b:#8ea7c4;--c:#c9a27a;--warn:#f2b155;--link:#8fb8ff;
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --mono:ui-monospace,"Cascadia Mono","SF Mono",Consolas,monospace;
+}
+@media (prefers-color-scheme:light){
+  :root{--bg:#f7f7f5;--panel:#fff;--line:#e2e2de;--fg:#16181b;--mut:#5b636d;--faint:#9aa1a9;
+        --a:#0f9d63;--b:#5b7594;--c:#9c6f43;--warn:#a5650b;--link:#2559c7}
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 var(--sans);-webkit-font-smoothing:antialiased}
+main{max-width:880px;margin:0 auto;padding:56px 24px 80px}
+a{color:var(--link);text-underline-offset:2px}
+a:focus-visible,summary:focus-visible{outline:2px solid var(--link);outline-offset:3px;border-radius:2px}
+code{font:0.88em var(--mono)}
+small{color:var(--mut)}
+.eyebrow{font:500 13px/1.4 var(--mono);color:var(--mut);letter-spacing:.02em;margin:0 0 20px}
+h1{font-size:clamp(28px,4.6vw,42px);line-height:1.15;letter-spacing:-.02em;font-weight:650;margin:0 0 18px;max-width:28ch}
+h1 em{font-style:normal;color:var(--a)}
+.lede{font-size:18px;color:var(--mut);max-width:62ch;margin:0}
+h2{font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--mut);margin:64px 0 6px}
+.sub{margin:0 0 20px;color:var(--mut);max-width:64ch}
+section>p{max-width:68ch}
 
-<h2>Result</h2>
-<p>Hantu's averaged <b>101.8 FPS</b>, ahead of Sqooky 3.5.1 (91.2) and CompyLock (88.5).
-Every Hantu's run beat every competitor run, and all four paired comparisons favour Hantu's. Sqooky and CompyLock overlap and cannot be ranked against each other.</p>
-<figure><figcaption>Mean FPS (Present count / wall time)</figcaption><svg viewBox="0 0 760 158" role="img" aria-label="Mean FPS (Present count / wall time)"><text class="lbl" x="0" y="32">Hantu&#x27;s</text><rect x="130" y="16" width="475.3" height="24" rx="3" fill="#5fd38d" opacity=".85"/><circle cx="604.4" cy="28" r="4" fill="#111418" stroke="#e6e9ee" stroke-width="1.5"/><circle cx="604.8" cy="28" r="4" fill="#111418" stroke="#e6e9ee" stroke-width="1.5"/><circle cx="612.3" cy="28" r="4" fill="#111418" stroke="#e6e9ee" stroke-width="1.5"/><circle cx="599.6" cy="28" r="4" fill="#111418" stroke="#e6e9ee" stroke-width="1.5"/><text class="val" x="622.3" y="33">101.8 FPS</text><text class="lbl" x="0" y="78">Sqooky 3.5.1</text><rect x="130" y="62" width="425.6" height="24" rx="3" fill="#7fb0ff" opacity=".85"/><circle cx="568.8" cy="74" r="4" fill="#111418" stroke="#e6e9ee" stroke-width="1.5"/><circle cx="542.4" cy="74" r="4" fill="#111418" stroke="#e6e9ee" stroke-width="1.5"/><text class="val" x="578.8" y="79">91.2 FPS</text><text class="lbl" x="0" y="124">CompyLock</text><rect x="130" y="108" width="413.0" height="24" rx="3" fill="#f0a35e" opacity=".85"/><circle cx="528.6" cy="120" r="4" fill="#111418" stroke="#e6e9ee" stroke-width="1.5"/><circle cx="557.3" cy="120" r="4" fill="#111418" stroke="#e6e9ee" stroke-width="1.5"/><text class="val" x="567.3" y="125">88.5 FPS</text></svg><div class="hint">Bars are means; dots are individual 300 s runs.</div></figure>
-<figure><figcaption>Paired difference: their FPS − Hantu's (adjacent restarts)</figcaption><svg viewBox="0 0 760 176" role="img" aria-label="Paired FPS differences"><line x1="586.0" y1="0" x2="586.0" y2="154" stroke="#aab4c2" stroke-dasharray="4 3"/><text class="hint" x="170.0" y="170" text-anchor="middle" fill="#aab4c2" font-size="12">-20</text><text class="hint" x="274.0" y="170" text-anchor="middle" fill="#aab4c2" font-size="12">-15</text><text class="hint" x="378.0" y="170" text-anchor="middle" fill="#aab4c2" font-size="12">-10</text><text class="hint" x="482.0" y="170" text-anchor="middle" fill="#aab4c2" font-size="12">-5</text><text class="hint" x="586.0" y="170" text-anchor="middle" fill="#aab4c2" font-size="12">+0</text><text class="hint" x="690.0" y="170" text-anchor="middle" fill="#aab4c2" font-size="12">+5</text><text class="lbl" x="0" y="19">Sqooky 3.5.1 pair 1</text><line x1="586.0" y1="14" x2="427.0" y2="14" stroke="#7fb0ff" stroke-width="10"/><text class="val" x="419.0" y="19" text-anchor="end">-7.6</text><text class="lbl" x="0" y="53">Sqooky 3.5.1 pair 2</text><line x1="586.0" y1="48" x2="308.0" y2="48" stroke="#7fb0ff" stroke-width="10"/><text class="val" x="300.0" y="53" text-anchor="end">-13.4</text><text class="lbl" x="0" y="87">CompyLock pair 1</text><line x1="586.0" y1="82" x2="213.3" y2="82" stroke="#f0a35e" stroke-width="10"/><text class="val" x="205.3" y="87" text-anchor="end">-17.9</text><text class="lbl" x="0" y="121">CompyLock pair 2</text><line x1="586.0" y1="116" x2="397.3" y2="116" stroke="#f0a35e" stroke-width="10"/><text class="val" x="389.3" y="121" text-anchor="end">-9.1</text></svg><div class="hint">Left of the dashed line means Hantu's was faster in that pair.</div></figure>
-<figure><figcaption>Process CPU (busy logical cores)</figcaption><svg viewBox="0 0 760 158" role="img" aria-label="Process CPU (busy logical cores)"><text class="lbl" x="0" y="32">Hantu&#x27;s</text><rect x="130" y="16" width="413.8" height="24" rx="3" fill="#5fd38d" opacity=".85"/><circle cx="547.5" cy="28" r="4" fill="#111418" stroke="#e6e9ee" stroke-width="1.5"/><circle cx="550.6" cy="28" r="4" fill="#111418" stroke="#e6e9ee" stroke-width="1.5"/><circle cx="528.9" cy="28" r="4" fill="#111418" stroke="#e6e9ee" stroke-width="1.5"/><circle cx="548.1" cy="28" r="4" fill="#111418" stroke="#e6e9ee" stroke-width="1.5"/><text class="val" x="560.6" y="33">5.17 cores</text><text class="lbl" x="0" y="78">Sqooky 3.5.1</text><rect x="130" y="62" width="449.2" height="24" rx="3" fill="#7fb0ff" opacity=".85"/><circle cx="587.3" cy="74" r="4" fill="#111418" stroke="#e6e9ee" stroke-width="1.5"/><circle cx="571.0" cy="74" r="4" fill="#111418" stroke="#e6e9ee" stroke-width="1.5"/><text class="val" x="597.3" y="79">5.61 cores</text><text class="lbl" x="0" y="124">CompyLock</text><rect x="130" y="108" width="453.5" height="24" rx="3" fill="#f0a35e" opacity=".85"/><circle cx="576.4" cy="120" r="4" fill="#111418" stroke="#e6e9ee" stroke-width="1.5"/><circle cx="590.5" cy="120" r="4" fill="#111418" stroke="#e6e9ee" stroke-width="1.5"/><text class="val" x="600.5" y="125">5.67 cores</text></svg><div class="hint">Lower is better. Hantu's did the most frames with the least CPU.</div></figure>
+.plot{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:20px 20px 8px}
+.row{display:grid;grid-template-columns:150px 1fr 120px;align-items:center;gap:16px;min-height:52px}
+.row+.row{border-top:1px solid var(--line)}
+.row.axis{border-top:0;min-height:32px}
+.name{font-weight:600}
+.name small{display:block;font-weight:400}
+.track{position:relative;height:28px}
+.axis .track{height:20px}
+.range{position:absolute;top:50%;height:2px;margin-top:-1px;background:currentColor;opacity:.35}
+.dot{position:absolute;top:50%;width:12px;height:12px;margin:-6px 0 0 -6px;border-radius:50%;background:currentColor;opacity:.55}
+.mean{position:absolute;top:2px;bottom:2px;width:3px;margin-left:-1.5px;border-radius:2px;background:currentColor}
+.bar{position:absolute;top:6px;bottom:6px;border-radius:4px 0 0 4px;background:currentColor;opacity:.8}
+.pairs .track::after{content:"";position:absolute;right:0;top:-6px;bottom:-6px;border-right:1px dashed var(--faint)}
+.tick{position:absolute;transform:translateX(-50%);font:12px var(--mono);color:var(--faint)}
+.unit{font:12px var(--mono);color:var(--faint);padding-left:10px}
+.val{font-variant-numeric:tabular-nums;line-height:1.25}
+.val b{font:600 20px var(--mono);display:block}
+.val small{font-size:13px}
+.t-a{color:var(--a)}.t-b{color:var(--b)}.t-c{color:var(--c)}
+.row .name,.row .val b{color:var(--fg)}
+.t-a .name,.t-a .val b{color:var(--a)}
+.legend{font-size:14px;color:var(--mut);margin:10px 2px 0}
+.legend i{display:inline-block;vertical-align:middle;margin:0 6px 0 14px;background:var(--mut)}
+.legend i:first-child{margin-left:0}
+.legend .ld{width:10px;height:10px;border-radius:50%;opacity:.6}
+.legend .lm{width:3px;height:14px;border-radius:2px}
 
-<h2>Summary</h2><div class="table-wrap"><table>
-<tr><th>Config</th><th class="text">Source</th><th>Runs</th><th>Mean FPS</th><th>Range</th><th>vs Hantu's</th><th>CPU cores</th><th>Frame/Present</th></tr>
-<tr><td><span class="sw" style="background:#5fd38d"></span>Hantu&#x27;s</td><td class="text">installed gameinfo.gi + perf_r3.cfg</td><td>4</td><td>101.8</td><td>100.6–103.3</td><td class="">—</td><td>5.17</td><td>1.00</td></tr><tr><td><span class="sw" style="background:#7fb0ff"></span>Sqooky 3.5.1</td><td class="text"><a href="https://github.com/Sqooky/OptimizationLock/tree/7d560c50cc172f90f431a35c21823e04d4bd66d2">Sqooky/OptimizationLock@7d560c5</a> (main HEAD, 2026-10-11)</td><td>2</td><td>91.2</td><td>88.4–94.0</td><td class="worse">-10.5%</td><td>5.61</td><td>2.20</td></tr><tr><td><span class="sw" style="background:#f0a35e"></span>CompyLock</td><td class="text"><a href="https://github.com/7liv/compylock/tree/e69ac8a7a7065af4d507dc2a2e488ff03f1be286">7liv/compylock@e69ac8a</a> (main HEAD, 2026-10-10)</td><td>2</td><td>88.5</td><td>85.4–91.6</td><td class="worse">-13.1%</td><td>5.67</td><td>2.19</td></tr></table></div>
+.caveat{border-left:3px solid var(--warn);background:var(--panel);border-radius:0 10px 10px 0;padding:18px 22px;margin-top:20px}
+.caveat h3{margin:0 0 6px;font-size:16px;color:var(--warn)}
+.caveat p{margin:0}
+ul.limits{padding-left:20px;max-width:68ch}
+ul.limits li{margin:8px 0}
 
-<h2>All runs</h2><div class="table-wrap"><table>
-<tr><th>Set</th><th>#</th><th>Arm</th><th>FPS</th><th>Presents</th><th>VProf frames</th><th>Ratio</th><th>CPU cores</th><th>Active P99 ms</th></tr>
-<tr><td>Sqooky 3.5.1</td><td>1</td><td><span class="sw" style="background:#5fd38d"></span>Hantu&#x27;s</td><td>101.7</td><td>30501</td><td>30501</td><td class="">1.00</td><td>5.22</td><td>15.39</td></tr><tr><td>Sqooky 3.5.1</td><td>2</td><td><span class="sw" style="background:#7fb0ff"></span>Sqooky 3.5.1</td><td>94.0</td><td>28206</td><td>59673</td><td class="worse">2.12</td><td>5.72</td><td>14.17*</td></tr><tr><td>Sqooky 3.5.1</td><td>3</td><td><span class="sw" style="background:#7fb0ff"></span>Sqooky 3.5.1</td><td>88.4</td><td>26512</td><td>60328</td><td class="worse">2.28</td><td>5.51</td><td>13.85*</td></tr><tr><td>Sqooky 3.5.1</td><td>4</td><td><span class="sw" style="background:#5fd38d"></span>Hantu&#x27;s</td><td>101.7</td><td>30522</td><td>30522</td><td class="">1.00</td><td>5.26</td><td>15.56</td></tr><tr><td>CompyLock</td><td>1</td><td><span class="sw" style="background:#5fd38d"></span>Hantu&#x27;s</td><td>103.3</td><td>31003</td><td>31003</td><td class="">1.00</td><td>4.99</td><td>14.62</td></tr><tr><td>CompyLock</td><td>2</td><td><span class="sw" style="background:#f0a35e"></span>CompyLock</td><td>85.4</td><td>25627</td><td>58024</td><td class="worse">2.26</td><td>5.58</td><td>14.67*</td></tr><tr><td>CompyLock</td><td>3</td><td><span class="sw" style="background:#f0a35e"></span>CompyLock</td><td>91.6</td><td>27469</td><td>58232</td><td class="worse">2.12</td><td>5.76</td><td>14.90*</td></tr><tr><td>CompyLock</td><td>4</td><td><span class="sw" style="background:#5fd38d"></span>Hantu&#x27;s</td><td>100.6</td><td>30191</td><td>30191</td><td class="">1.00</td><td>5.23</td><td>14.47</td></tr></table></div>
-<p class="hint">* Biased: VProfLite counted about 2× the presented frames, so its percentiles include empty frames. Both Sqooky and CompyLock set
-<code>engine_low_latency_sleep_after_client_tick false</code>, <code>engine_accurate_input_processing_delta_time true</code> and
-<code>engine_max_ticks_to_simulate 2</code>, the trio previously linked to this artifact. FPS uses the Present count and is unaffected.</p>
+.table-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--panel)}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{padding:10px 14px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child>*{border-bottom:0}
+thead th{font-size:12px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--mut);white-space:nowrap}
+tbody th{font-weight:600;white-space:nowrap}
+tbody td:first-child{white-space:nowrap}
+.num{text-align:right;font:13.5px var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+.flag{color:var(--warn)}
+.sw{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:8px;background:currentColor;vertical-align:1px}
+.sw.t-a{color:var(--a)}.sw.t-b{color:var(--b)}.sw.t-c{color:var(--c)}
 
-<h2>Method</h2><ul>
-<li>Harness <code>r3_20261011/bench/harness3.py</code>. Two ABBA sets: Hantu's vs Sqooky, then Hantu's vs CompyLock. Each run kills the game, installs the frozen gameinfo, launches through dead.bat with <code>-vconsole -insecure</code> and plays the demo via VConsole.</li>
-<li>Hantu's = the installed <code>gameinfo.gi</code> (md5 c9281b77) with <code>perf_r3.cfg</code>. For the other arms an empty <code>perf_r3.cfg</code> neutralised the auto.cfg hook.</li>
-<li>Both upstream files were checked against their <code>main</code> HEAD on the run date and matched byte for byte.</li>
-<li>The original gameinfo and perf_r3.cfg were restored after each set and verified.</li></ul>
+details{border-top:1px solid var(--line);padding:14px 0}
+details:last-of-type{border-bottom:1px solid var(--line)}
+summary{cursor:pointer;font-weight:600;list-style-position:outside;margin-left:18px}
+details[open] summary{margin-bottom:14px}
+details p,details li{max-width:70ch}
+footer{margin-top:56px;font-size:13px;color:var(--faint)}
 
-<h2>Limits</h2><ul>
-<li>Two pairs per opponent. The formal 95% CIs on the FPS difference still span zero, though the direction held in all four pairs.</li>
-<li>Hantu's includes <code>perf_r3.cfg</code>; a gameinfo-only Hantu's arm was not measured.</li>
-<li>Upstream extras were not installed (Sqooky's pak54 and base_convars.txt; CompyLock's VPKs and video.txt).</li>
-<li>Image quality differs. Hantu's turns off direct lighting, skybox, fog and decals and caps textures at 128, so part of the lead comes from rendering less.</li>
-<li>CPU-bound spectator demo; live matches add server and input work.</li></ul>
-<p class="hint">Raw data: <code>runs-20261012_135232_597622</code>, <code>runs-20261012_141613_574256</code> (results.json, summary.md, console slices). Generated by <code>make_html.py</code>.</p>
-</main></body></html>
+@media (max-width:640px){
+  main{padding-top:36px}
+  .row{grid-template-columns:1fr auto;grid-template-areas:"name val" "track track";gap:4px 12px;padding:10px 0}
+  .row .name{grid-area:name}.row .val{grid-area:val;text-align:right}.row .track{grid-area:track}
+  .row.axis{grid-template-areas:"track track";padding-top:0}
+  .row.axis>div:first-child,.row.axis .unit{display:none}
+  .val small{display:none}
+}
+</style>
+</head>
+<body>
+<main>
+<header>
+<p class="eyebrow">Deadlock gameinfo benchmark · client 6774 · 2026-10-12</p>
+<h1><em>Hantu's</em> gameinfo ran 12% faster than Sqooky and 15% faster than CompyLock.</h1>
+<p class="lede">101.8 FPS against 91.2 and 88.5, on the same recorded match with the game restarted for every run.
+All four Hantu's runs beat all four of the others.</p>
+</header>
+
+<section aria-labelledby="h-fps">
+<h2 id="h-fps">Average FPS</h2>
+<p class="sub">Each dot is one 300-second run; the solid tick is the average. Higher is better.</p>
+<div class="plot" role="img" aria-label="Average FPS: Hantu's 101.8; Sqooky 3.5.1 91.2; CompyLock 88.5"><div class="row t-a"><div class="name">Hantu&#x27;s</div><div class="track"><span class="range" style="left:68.79%;width:calc(77.81% - 68.79%)"></span><span class="dot" style="left:72.22%" title="101.7 FPS"></span><span class="dot" style="left:72.47%" title="101.7 FPS"></span><span class="dot" style="left:77.81%" title="103.3 FPS"></span><span class="dot" style="left:68.79%" title="100.6 FPS"></span><span class="mean" style="left:72.82%"></span></div><div class="val"><b>101.8</b><small>fastest</small></div></div><div class="row t-b"><div class="name">Sqooky 3.5.1</div><div class="track"><span class="range" style="left:27.91%;width:calc(46.73% - 27.91%)"></span><span class="dot" style="left:46.73%" title="94.0 FPS"></span><span class="dot" style="left:27.91%" title="88.4 FPS"></span><span class="mean" style="left:37.32%"></span></div><div class="val"><b>91.2</b><small>Hantu's +11.7%</small></div></div><div class="row t-c"><div class="name">CompyLock</div><div class="track"><span class="range" style="left:18.08%;width:calc(38.54% - 18.08%)"></span><span class="dot" style="left:18.08%" title="85.4 FPS"></span><span class="dot" style="left:38.54%" title="91.6 FPS"></span><span class="mean" style="left:28.31%"></span></div><div class="val"><b>88.5</b><small>Hantu's +15.1%</small></div></div><div class="row axis" aria-hidden="true"><div></div><div class="track"><span class="tick" style="left:0.00%">80</span><span class="tick" style="left:16.67%">85</span><span class="tick" style="left:33.33%">90</span><span class="tick" style="left:50.00%">95</span><span class="tick" style="left:66.67%">100</span><span class="tick" style="left:83.33%">105</span><span class="tick" style="left:100.00%">110</span></div><div class="unit">FPS</div></div></div>
+<p class="legend"><i class="ld"></i>one run <i class="lm"></i>average</p>
+</section>
+
+<section aria-labelledby="h-pairs">
+<h2 id="h-pairs">Back-to-back pairs</h2>
+<p class="sub">Each competitor run was paired with the Hantu's run next to it, which cancels slow drift such as heat or background load.
+Bars show how many FPS the competitor lost in that pair.</p>
+<div class="plot pairs" role="img" aria-label="Their FPS minus Hantu's in each back-to-back pair: Sqooky 3.5.1 pair 1 -7.6; Sqooky 3.5.1 pair 2 -13.4; CompyLock pair 1 -17.9; CompyLock pair 2 -9.1"><div class="row t-b"><div class="name">vs Sqooky 3.5.1 <small>pair 1</small></div><div class="track"><span class="bar" style="left:61.78%;right:0"></span></div><div class="val"><b>-7.6</b><small>94.0 vs 101.7</small></div></div><div class="row t-b"><div class="name">vs Sqooky 3.5.1 <small>pair 2</small></div><div class="track"><span class="bar" style="left:33.17%;right:0"></span></div><div class="val"><b>-13.4</b><small>88.4 vs 101.7</small></div></div><div class="row t-c"><div class="name">vs CompyLock <small>pair 1</small></div><div class="track"><span class="bar" style="left:10.40%;right:0"></span></div><div class="val"><b>-17.9</b><small>85.4 vs 103.3</small></div></div><div class="row t-c"><div class="name">vs CompyLock <small>pair 2</small></div><div class="track"><span class="bar" style="left:54.63%;right:0"></span></div><div class="val"><b>-9.1</b><small>91.6 vs 100.6</small></div></div><div class="row axis" aria-hidden="true"><div></div><div class="track"><span class="tick" style="left:0.00%">-20</span><span class="tick" style="left:25.00%">-15</span><span class="tick" style="left:50.00%">-10</span><span class="tick" style="left:75.00%">-5</span><span class="tick" style="left:100.00%">0</span></div><div class="unit">FPS</div></div></div>
+</section>
+
+<section aria-labelledby="h-catch">
+<h2 id="h-catch">Before you switch</h2>
+<div class="caveat">
+<h3>The configs do not look the same</h3>
+<p>Hantu's turns off direct lighting, the skybox, fog and decals and caps textures at 128. Part of its lead comes from drawing less, so compare the visuals as well as the numbers.</p>
+</div>
+<ul class="limits">
+<li>Hantu's was tested with its <code>perf_r3.cfg</code>. The other two were tested with their <code>gameinfo.gi</code> only; Sqooky's addon pak and <code>base_convars.txt</code> and CompyLock's VPKs and <code>video.txt</code> were not installed.</li>
+<li>Two pairs per competitor is a small sample. The direction held in every pair, but the 95% confidence interval on each difference still includes zero.</li>
+<li>Sqooky and CompyLock overlap (85.4–94.0 FPS) and cannot be ranked against each other.</li>
+<li>The scene is a CPU-bound spectator replay. Live matches add server and input work.</li>
+</ul>
+</section>
+
+<section aria-labelledby="h-configs">
+<h2 id="h-configs">What was tested</h2>
+<p class="sub">Both public configs were checked against their latest <code>main</code> commit on the day of the run.</p>
+<div class="table-wrap"><table>
+<thead><tr><th scope="col">Config</th><th scope="col">Source</th><th scope="col" class="num">Avg FPS</th><th scope="col" class="num">Range</th><th scope="col" class="num">CPU cores</th></tr></thead>
+<tbody><tr><th scope="row"><span class="sw t-a"></span>Hantu&#x27;s</th><td>Installed <code>gameinfo.gi</code> + <code>perf_r3.cfg</code><br><small>md5 c9281b77</small></td><td class="num">101.8</td><td class="num">100.6–103.3</td><td class="num">5.17</td></tr><tr><th scope="row"><span class="sw t-b"></span>Sqooky 3.5.1</th><td><a href="https://github.com/Sqooky/OptimizationLock/tree/7d560c50cc172f90f431a35c21823e04d4bd66d2">Sqooky/OptimizationLock</a>, "Sqooky's .gi"<br><small>main @ 7d560c5, 2026-10-11</small></td><td class="num">91.2</td><td class="num">88.4–94.0</td><td class="num">5.61</td></tr><tr><th scope="row"><span class="sw t-c"></span>CompyLock</th><td><a href="https://github.com/7liv/compylock/tree/e69ac8a7a7065af4d507dc2a2e488ff03f1be286">7liv/compylock</a><br><small>main @ e69ac8a, 2026-10-10</small></td><td class="num">88.5</td><td class="num">85.4–91.6</td><td class="num">5.67</td></tr></tbody></table></div>
+</section>
+
+<section aria-labelledby="h-detail">
+<h2 id="h-detail">Details</h2>
+<details>
+<summary>Every run</summary>
+<div class="table-wrap"><table>
+<thead><tr><th scope="col">Set</th><th scope="col" class="num">#</th><th scope="col">Config</th><th scope="col" class="num">FPS</th><th scope="col" class="num">Frames shown</th><th scope="col" class="num">Profiler frames</th><th scope="col" class="num">Ratio</th><th scope="col" class="num">CPU cores</th><th scope="col" class="num">P99 ms</th></tr></thead>
+<tbody><tr><td>vs Sqooky 3.5.1</td><td class="num">1</td><th scope="row"><span class="sw t-a"></span>Hantu&#x27;s</th><td class="num">101.7</td><td class="num">30,501</td><td class="num">30,501</td><td class="num">1.00</td><td class="num">5.22</td><td class="num">15.39</td></tr><tr><td>vs Sqooky 3.5.1</td><td class="num">2</td><th scope="row"><span class="sw t-b"></span>Sqooky 3.5.1</th><td class="num">94.0</td><td class="num">28,206</td><td class="num">59,673</td><td class="num flag">2.12</td><td class="num">5.72</td><td class="num">14.17*</td></tr><tr><td>vs Sqooky 3.5.1</td><td class="num">3</td><th scope="row"><span class="sw t-b"></span>Sqooky 3.5.1</th><td class="num">88.4</td><td class="num">26,512</td><td class="num">60,328</td><td class="num flag">2.28</td><td class="num">5.51</td><td class="num">13.85*</td></tr><tr><td>vs Sqooky 3.5.1</td><td class="num">4</td><th scope="row"><span class="sw t-a"></span>Hantu&#x27;s</th><td class="num">101.7</td><td class="num">30,522</td><td class="num">30,522</td><td class="num">1.00</td><td class="num">5.26</td><td class="num">15.56</td></tr><tr><td>vs CompyLock</td><td class="num">1</td><th scope="row"><span class="sw t-a"></span>Hantu&#x27;s</th><td class="num">103.3</td><td class="num">31,003</td><td class="num">31,003</td><td class="num">1.00</td><td class="num">4.99</td><td class="num">14.62</td></tr><tr><td>vs CompyLock</td><td class="num">2</td><th scope="row"><span class="sw t-c"></span>CompyLock</th><td class="num">85.4</td><td class="num">25,627</td><td class="num">58,024</td><td class="num flag">2.26</td><td class="num">5.58</td><td class="num">14.67*</td></tr><tr><td>vs CompyLock</td><td class="num">3</td><th scope="row"><span class="sw t-c"></span>CompyLock</th><td class="num">91.6</td><td class="num">27,469</td><td class="num">58,232</td><td class="num flag">2.12</td><td class="num">5.76</td><td class="num">14.90*</td></tr><tr><td>vs CompyLock</td><td class="num">4</td><th scope="row"><span class="sw t-a"></span>Hantu&#x27;s</th><td class="num">100.6</td><td class="num">30,191</td><td class="num">30,191</td><td class="num">1.00</td><td class="num">5.23</td><td class="num">14.47</td></tr></tbody></table></div>
+<p><small>* Not comparable. Sqooky and CompyLock both set <code>engine_low_latency_sleep_after_client_tick false</code>,
+<code>engine_accurate_input_processing_delta_time true</code> and <code>engine_max_ticks_to_simulate 2</code>. With those set, the game's profiler logs about two frames
+for every frame shown, which drags its frame-time percentiles down. FPS is counted from frames actually shown, so it is unaffected.</small></p>
+</details>
+<details>
+<summary>How it was measured</summary>
+<ul>
+<li>Demo 110239551 from tick 138245, 300 seconds per run, 1600×900 windowed, same installed mods for every run.</li>
+<li>Two sets in ABBA order: Hantu's, Sqooky, Sqooky, Hantu's; then the same with CompyLock. Each run closed the game, installed that config's <code>gameinfo.gi</code>, relaunched and drove the replay over the developer console.</li>
+<li>For the competitor runs an empty <code>perf_r3.cfg</code> replaced Hantu's, so none of its settings applied.</li>
+<li>FPS = frames presented ÷ wall-clock seconds. CPU = process CPU time ÷ wall-clock seconds, where 1.0 is one fully busy logical core.</li>
+<li>The original <code>gameinfo.gi</code> and <code>perf_r3.cfg</code> were restored and checksum-verified after each set.</li>
+</ul>
+</details>
+</section>
+
+<footer>Raw data: <code>runs-20261012_135232_597622</code> and <code>runs-20261012_141613_574256</code>.</footer>
+</main>
+</body>
+</html>
