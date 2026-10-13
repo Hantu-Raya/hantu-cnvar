@@ -113,11 +113,40 @@ footer{margin-top:56px;font-size:13px;color:var(--faint)}
   .row.axis>div:first-child,.row.axis .unit{display:none}
   .val small{display:none}
 }
+
+@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+h2,#top{scroll-margin-top:24px}
+.topbar{position:fixed;top:0;left:0;right:0;height:3px;z-index:10;background:var(--a);transform-origin:left;transform:scaleX(var(--p,0))}
+.toc{display:none}
+@media (min-width:1180px){
+  .topbar{display:none}
+  main{margin-left:max(232px,calc(50% - 440px))}
+  .toc{display:block;position:fixed;top:56px;left:max(24px,calc(50% - 648px));width:184px;font-size:14px}
+}
+.toc-pct{font:650 34px/1 var(--mono);letter-spacing:-.02em;font-variant-numeric:tabular-nums;color:var(--fg)}
+.toc-pct small{font-size:15px;font-weight:500;color:var(--mut);margin-left:2px}
+.toc-label{font:500 11px/1.4 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--mut);margin:6px 0 18px}
+.toc-list{position:relative}
+.toc-rail,.toc-fill{position:absolute;left:0;top:4px;bottom:4px;width:2px;border-radius:2px}
+.toc-rail{background:var(--line)}
+.toc-fill{background:var(--a);transform-origin:top;transform:scaleY(var(--p,0))}
+.toc ol{list-style:none;margin:0;padding:0}
+.toc a{display:block;padding:6px 0 6px 16px;color:var(--mut);text-decoration:none;line-height:1.35;transition:color .15s}
+.toc a:hover{color:var(--fg)}
+.toc li.done a{color:var(--fg)}
+.toc a[aria-current]{color:var(--a);font-weight:600}
+
 </style>
 </head>
 <body>
+<div class="topbar" aria-hidden="true"></div>
+<nav class="toc" aria-label="On this page">
+<div class="toc-pct" aria-hidden="true"><span id="toc-pct">0</span><small>%</small></div>
+<div class="toc-label">read</div>
+<div class="toc-list"><span class="toc-rail" aria-hidden="true"></span><span class="toc-fill" aria-hidden="true"></span><ol><li><a href="#top">Summary</a></li><li><a href="#h-fps">Average FPS</a></li><li><a href="#h-pairs">Back-to-back pairs</a></li><li><a href="#h-found">What was found</a></li><li><a href="#h-catch">Before you switch</a></li><li><a href="#h-configs">What was tested</a></li><li><a href="#h-detail">Details</a></li></ol></div>
+</nav>
 <main>
-<header>
+<header id="top">
 <p class="eyebrow">Deadlock gameinfo benchmark · client 6774 · 2026-10-13</p>
 <h1><em>Hantu's</em> gameinfo ran 13% faster than Sqooky and tied kaizuchanerus' minimum spec.</h1>
 <p class="lede">Hantu's averaged 112.3 FPS to Sqooky's 99.2, and 111.8 to kaizuchanerus' 110.3, on the same recorded match with the game restarted for every run.
@@ -253,5 +282,36 @@ CPU = process CPU time ÷ wall-clock seconds, where 1.0 is one fully busy logica
 
 <footer>Raw data: <code>runs-20261013_121057_414360</code>, <code>runs-20261013_123533_639743</code>, <code>runs-20261013_125945_694922</code>, <code>runs-20261013_111854_366798</code>, <code>runs-20261013_061209_173442</code>, <code>runs-20261013_081450_652770</code>.</footer>
 </main>
+<script>(() => {
+  "use strict";
+  const root = document.documentElement;
+  const pct = document.getElementById("toc-pct");
+  const links = [...document.querySelectorAll(".toc a")];
+  const targets = links.map((a) => document.getElementById(a.hash.slice(1)));
+  let queued = false, lastN = -1, lastActive = -2;
+  function update() {
+    queued = false;
+    const max = root.scrollHeight - innerHeight;
+    const p = max > 0 ? Math.min(1, Math.max(0, scrollY / max)) : 1;
+    root.style.setProperty("--p", p.toFixed(4));
+    const n = Math.round(p * 100);
+    if (n !== lastN) { lastN = n; pct.textContent = n; }
+    let active = -1;
+    const line = innerHeight * 0.3;
+    targets.forEach((t, i) => { if (t && t.getBoundingClientRect().top <= line) active = i; });
+    if (p >= 0.999) active = targets.length - 1;
+    if (active === lastActive) return;
+    lastActive = active;
+    links.forEach((a, i) => {
+      a.parentElement.classList.toggle("done", i < active);
+      if (i === active) a.setAttribute("aria-current", "location"); else a.removeAttribute("aria-current");
+    });
+  }
+  const queue = () => { if (!queued) { queued = true; requestAnimationFrame(update); } };
+  addEventListener("scroll", queue, { passive: true });
+  addEventListener("resize", queue);
+  document.querySelectorAll("details").forEach((d) => d.addEventListener("toggle", queue));
+  update();
+})();</script>
 </body>
 </html>
