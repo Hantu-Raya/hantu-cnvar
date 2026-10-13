@@ -79,6 +79,8 @@ section>p{max-width:68ch}
 .caveat{border-left:3px solid var(--warn);background:var(--panel);border-radius:0 10px 10px 0;padding:18px 22px;margin-top:20px}
 .caveat h3{margin:0 0 6px;font-size:16px;color:var(--warn)}
 .caveat p{margin:0}
+.added{display:inline-block;vertical-align:2px;margin-left:8px;padding:1px 8px;border:1px solid var(--a);border-radius:999px;
+  font:600 11px/1.4 var(--mono);letter-spacing:.04em;text-transform:uppercase;color:var(--a);white-space:nowrap}
 .nopm{display:inline-block;vertical-align:3px;margin-left:10px;padding:2px 8px;border:1px solid var(--warn);border-radius:999px;
   font:600 11px/1.4 var(--mono);letter-spacing:.04em;text-transform:uppercase;color:var(--warn);white-space:nowrap}
 .nopm-note{border-left:3px solid var(--warn);background:var(--panel);border-radius:0 10px 10px 0;padding:14px 18px;margin:14px 0 8px;font-size:15px;max-width:68ch}
@@ -192,7 +194,7 @@ so the FPS changes should hold. They have <b>no 1% lows or latency</b>, and they
 
 <h3>Sqooky's engine settings: no FPS cost, slightly worse lows and latency</h3>
 <p class="sub">Sqooky sets <code>engine_accurate_input_processing_delta_time true</code> and <code>engine_max_ticks_to_simulate 2</code>
-(plus <code>engine_low_latency_sleep_after_client_tick false</code>, which is already the default). Timed with PresentMon, removing them moved average FPS from
+(plus <code>engine_low_latency_sleep_after_client_tick false</code>, which the tester's <code>auto.cfg</code> set back to true in every run, so it was not tested). Timed with PresentMon, removing them moved average FPS from
 99.4 to 100.4 (+1.0%, within noise). The 1% low rose from 64.0 to 67.2 and display latency fell from
 19.4 to 19.0 ms (P99 27.1 to 26.3), consistent in both pairs.</p>
 <div class="plot" role="img" aria-label="Sqooky FPS as published 99.4, without the two settings 100.4"><div class="row t-b"><div class="name">As published</div><div class="track"><span class="range" style="left:38.79%;width:calc(49.23% - 38.79%)"></span><span class="dot" style="left:49.23%" title="99.9 FPS"></span><span class="dot" style="left:38.79%" title="98.9 FPS"></span><span class="mean" style="left:44.01%"></span></div><div class="val"><b>99.4</b><small>two settings on</small></div></div><div class="row t-a"><div class="name">Without them</div><div class="track"><span class="range" style="left:49.91%;width:calc(58.31% - 49.91%)"></span><span class="dot" style="left:58.31%" title="100.8 FPS"></span><span class="dot" style="left:49.91%" title="100.0 FPS"></span><span class="mean" style="left:54.11%"></span></div><div class="val"><b>100.4</b><small>+1.0%</small></div></div><div class="row axis" aria-hidden="true"><div></div><div class="track"><span class="tick" style="left:0.00%">95</span><span class="tick" style="left:50.00%">100</span><span class="tick" style="left:100.00%">105</span></div><div class="unit">FPS</div></div></div>
@@ -220,11 +222,12 @@ The Hantu's runs above include it, so the PresentMon head-to-head already reflec
 <div class="table-wrap"><table>
 <thead><tr><th scope="col">Change to Hantu's</th><th scope="col" class="num">Change</th><th scope="col" class="num">Avg FPS</th>
 <th scope="col" class="num">1% low</th><th scope="col" class="num">Latency</th><th scope="col" class="num">Pairs (FPS)</th></tr></thead>
-<tbody><tr><th scope="row"><code>r_frame_sync_enable 0</code> (from kaizuchanerus)</th><td class="num">-0.7%</td><td class="num">112.6 → 111.9</td><td class="num">70.5 → 70.6</td><td class="num">18.7 → 18.7 ms</td><td class="num">-2.0, +0.6</td></tr><tr><th scope="row"><code>engine_low_latency_sleep_after_client_tick 1</code> (from kaizuchanerus)</th><td class="num">+1.7%</td><td class="num">110.3 → 112.3</td><td class="num">68.6 → 70.6</td><td class="num">18.9 → 18.8 ms</td><td class="num">+2.1, +1.8</td></tr><tr><th scope="row">Light-cookie allocation back to default (8 / 16)</th><td class="num">-0.9%</td><td class="num">112.9 → 111.9</td><td class="num">72.0 → 69.3</td><td class="num">18.6 → 18.8 ms</td><td class="num">-2.0, -0.0</td></tr><tr><th scope="row"><code>SceneSystem/GpuLightBinner 0</code></th><td class="num">+0.3%</td><td class="num">112.9 → 113.2</td><td class="num">70.9 → 68.9</td><td class="num">18.8 → 18.7 ms</td><td class="num">+1.1, -0.5</td></tr></tbody></table></div>
+<tbody><tr><th scope="row"><code>r_frame_sync_enable 0</code> (from kaizuchanerus)</th><td class="num">-0.7%</td><td class="num">112.6 → 111.9</td><td class="num">70.5 → 70.6</td><td class="num">18.7 → 18.7 ms</td><td class="num">-2.0, +0.6</td></tr><tr><th scope="row"><code>engine_low_latency_sleep_after_client_tick 1</code> (from kaizuchanerus) <span class="added">Now in Hantu's config</span></th><td class="num">+1.7%</td><td class="num">110.3 → 112.3</td><td class="num">68.6 → 70.6</td><td class="num">18.9 → 18.8 ms</td><td class="num">+2.1, +1.8</td></tr><tr><th scope="row">Light-cookie allocation back to default (8 / 16)</th><td class="num">-0.9%</td><td class="num">112.9 → 111.9</td><td class="num">72.0 → 69.3</td><td class="num">18.6 → 18.8 ms</td><td class="num">-2.0, -0.0</td></tr><tr><th scope="row"><code>SceneSystem/GpuLightBinner 0</code> <span class="added">Now in Hantu's config</span></th><td class="num">+0.3%</td><td class="num">112.9 → 113.2</td><td class="num">70.9 → 68.9</td><td class="num">18.8 → 18.7 ms</td><td class="num">+1.1, -0.5</td></tr></tbody></table></div>
 <p class="legend">Timed with PresentMon. Each row is one back-to-back set: two 300-second runs of Hantu's config and two with the change (before → after).
-Average FPS differences under about 3% are noise, and 1% lows moved by up to about 4 FPS between runs of the same config. The sleep-after-tick change
-(+1.7%) won both pairs, but its Hantu's runs were the slowest of the four sets (110.3), and with the change it ran 112.3,
-no faster than Hantu's own runs in the other three sets (112.6–112.9). It needs more pairs before it counts.</p>
+Average FPS differences under about 3% are noise, and 1% lows moved by up to about 4 FPS between runs of the same config. The sleep-after-tick row
+compares two identical setups: the tester's <code>auto.cfg</code> already set it to true in every run, so its +1.7% is run-to-run noise.</p>
+<p class="sub" style="margin-top:14px">Added to Hantu's config after these tests: <code>engine_low_latency_sleep_after_client_tick 1</code> and <code>SceneSystem/GpuLightBinner 0</code>. The sleep setting only matters
+without the <code>auto.cfg</code>. Neither moved FPS or latency outside the noise, so the head-to-head above, measured without them, still stands.</p>
 </section>
 
 <section aria-labelledby="h-catch">
@@ -238,6 +241,9 @@ breakables and golden statues at range, and a 4,500-unit draw distance. Part of 
 <li>Hantu's was tested with its <code>perf_r3.cfg</code>. Some of its lines only apply with a cvar-unhide DLL in <code>citadel/addons</code>. The gameinfo alone ran at 104.5 FPS
 in the same test setup <span class="nopm">Not PresentMon</span>.</li>
 <li>The public configs were tested with their <code>gameinfo.gi</code> only. Lines the game ignores (locked ConVars) were left out, which changes nothing. Sqooky's addon pak and <code>base_convars.txt</code> were not installed.</li>
+<li>Every run, Hantu's included, also ran the tester's <code>auto.cfg</code> (112 settings) after the gameinfo. Where a config sets the same ConVar,
+<code>auto.cfg</code> won: 9 of Hantu's lines, 9 of Sqooky's and 5 of kaizuchanerus'. All three got the same values, so the comparison
+is like for like, but the public configs did not run exactly as published.</li>
 <li>Two pairs per public config is a small sample. A 3% difference is about the smallest this design can resolve.</li>
 <li>The scene is a CPU-bound spectator replay. Live matches add server and input work, and the latency figures exclude input.</li>
 </ul>
