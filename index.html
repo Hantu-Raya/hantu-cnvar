@@ -79,6 +79,10 @@ section>p{max-width:68ch}
 .caveat{border-left:3px solid var(--warn);background:var(--panel);border-radius:0 10px 10px 0;padding:18px 22px;margin-top:20px}
 .caveat h3{margin:0 0 6px;font-size:16px;color:var(--warn)}
 .caveat p{margin:0}
+.nopm{display:inline-block;vertical-align:3px;margin-left:10px;padding:2px 8px;border:1px solid var(--warn);border-radius:999px;
+  font:600 11px/1.4 var(--mono);letter-spacing:.04em;text-transform:uppercase;color:var(--warn);white-space:nowrap}
+.nopm-note{border-left:3px solid var(--warn);background:var(--panel);border-radius:0 10px 10px 0;padding:14px 18px;margin:14px 0 8px;font-size:15px;max-width:68ch}
+.nopm-note p{margin:0}
 ul.limits{padding-left:20px;max-width:68ch}
 ul.limits li{margin:8px 0}
 
@@ -117,7 +121,8 @@ footer{margin-top:56px;font-size:13px;color:var(--faint)}
 <p class="eyebrow">Deadlock gameinfo benchmark · client 6774 · 2026-10-13</p>
 <h1><em>Hantu's</em> gameinfo ran 13% faster than Sqooky and tied kaizuchanerus' minimum spec.</h1>
 <p class="lede">Hantu's averaged 112.3 FPS to Sqooky's 99.2, and 111.8 to kaizuchanerus' 110.3, on the same recorded match with the game restarted for every run.
-Every frame was timed with PresentMon. kaizuchanerus keeps up by drawing less: with Hantu's object culling and draw distance it lost 9%.</p>
+Every frame was timed with PresentMon. kaizuchanerus keeps up by drawing less: with Hantu's object culling and draw distance it lost 9%
+(game frame counter, not PresentMon).</p>
 <p class="update"><b>Correction:</b> the previous version said two Sqooky settings cost it 9%. That came from the game's own frame counter, which undercounts with those
 settings on. Timed with PresentMon they change average FPS by only +1.0%; they do make 1% lows and latency slightly worse. <a href="#h-found">Details</a></p>
 </header>
@@ -148,7 +153,10 @@ Bars show how many FPS the public config gained or lost in that pair.</p>
 
 <section aria-labelledby="h-found">
 <h2 id="h-found">What was found</h2>
-<h3>kaizuchanerus keeps up by culling</h3>
+<div class="nopm-note"><p><span class="nopm">Not PresentMon</span> Results marked like this were measured before PresentMon was added, with the game's own frame counter. For configs
+without Sqooky's engine settings that counter matched PresentMon within 0.4% on every run checked, and these comparisons stay within one config,
+so the FPS changes should hold. They have <b>no 1% lows or latency</b>, and they were not re-run with PresentMon.</p></div>
+<h3>kaizuchanerus keeps up by culling<span class="nopm">Not PresentMon</span></h3>
 <p class="sub">It sets <code>r_size_cull_threshold 1.6</code> (hides small objects at range, including breakables and golden statues) and <code>r_farz</code> /
 <code>r_mapextents 4500</code> (a shorter draw distance). Switching those three to Hantu's values (0.9, 13999, 7000) dropped it from 110.4 to
 100.6 FPS (-8.9%, both pairs agreeing). Which of the three carries most of that was not split out.</p>
@@ -173,17 +181,17 @@ the earlier, wrong "9%" figure. Even without them Sqooky stays about 10% behind 
 <li><b>One adds latency.</b> Sqooky's <code>snd_mixahead 0.05</code> buffers 50 ms of audio; the default is 1 ms.</li>
 </ul>
 
-<h3>Mesh buffer pools: +1.7% for Hantu's</h3>
+<h3>Mesh buffer pools: +1.7% for Hantu's<span class="nopm">Not PresentMon</span></h3>
 <p class="sub">Hantu's gameinfo already reserved index and vertex buffer pools, but the game's mesh code only uses them when two
 <code>MeshSystem</code> flags are on, and they are off by default. Turning on <code>UseIndexBufferPool</code> and <code>UseVertexBufferPool</code> cut vertex buffers
-from about 5,670 to about 440 and used about 760 MB more video memory. All four back-to-back pairs favoured it (+3.6, +1.5, +0.5, +1.9 FPS,
-game frame counter, which is reliable for this config). The Hantu's runs above include it.</p>
+from about 5,670 to about 440 and used about 760 MB more video memory. All four back-to-back pairs favoured it (+3.6, +1.5, +0.5, +1.9 FPS).
+The Hantu's runs above include it, so the PresentMon head-to-head already reflects it.</p>
 
-<h3>Tried, no gain</h3>
+<h3>Tried, no gain<span class="nopm">Not PresentMon</span></h3>
 <div class="table-wrap"><table>
 <thead><tr><th scope="col">Change to Hantu's</th><th scope="col" class="num">Change</th><th scope="col" class="num">FPS before</th><th scope="col" class="num">FPS after</th></tr></thead>
 <tbody><tr><th scope="row"><code>r_frame_sync_enable 0</code> (from kaizuchanerus)</th><td class="num">-0.3%</td><td class="num">111.4</td><td class="num">111.1</td></tr><tr><th scope="row"><code>engine_low_latency_sleep_after_client_tick 1</code> (from kaizuchanerus)</th><td class="num">+0.1%</td><td class="num">110.8</td><td class="num">111.0</td></tr><tr><th scope="row">Light-cookie allocation back to default (8 / 16)</th><td class="num">-0.4%</td><td class="num">111.5</td><td class="num">111.0</td></tr><tr><th scope="row"><code>SceneSystem/GpuLightBinner 0</code> (gameinfo only, no cfg)</th><td class="num">+1.0%</td><td class="num">104.5</td><td class="num">105.6</td></tr></tbody></table></div>
-<p class="legend">Each row is one set of four 300-second runs, measured with the game's frame counter (reliable for these configs); differences under about 3% are noise.</p>
+<p class="legend">Each row is one set of four 300-second runs; differences under about 3% are noise. Average FPS only: no 1% lows or latency.</p>
 </section>
 
 <section aria-labelledby="h-catch">
@@ -194,7 +202,8 @@ game frame counter, which is reliable for this config). The Hantu's runs above i
 breakables and golden statues at range, and a 4,500-unit draw distance. Part of each lead comes from drawing less, so compare the visuals as well as the numbers.</p>
 </div>
 <ul class="limits">
-<li>Hantu's was tested with its <code>perf_r3.cfg</code>. Some of its lines only apply with a cvar-unhide DLL in <code>citadel/addons</code>. The gameinfo alone ran at 104.5 FPS in the same test setup.</li>
+<li>Hantu's was tested with its <code>perf_r3.cfg</code>. Some of its lines only apply with a cvar-unhide DLL in <code>citadel/addons</code>. The gameinfo alone ran at 104.5 FPS
+in the same test setup <span class="nopm">Not PresentMon</span>.</li>
 <li>The public configs were tested with their <code>gameinfo.gi</code> only. Lines the game ignores (locked ConVars) were left out, which changes nothing. Sqooky's addon pak and <code>base_convars.txt</code> were not installed.</li>
 <li>Two pairs per public config is a small sample. A 3% difference is about the smallest this design can resolve.</li>
 <li>The scene is a CPU-bound spectator replay. Live matches add server and input work, and the latency figures exclude input.</li>
@@ -221,9 +230,10 @@ breakables and golden statues at range, and a 4,500-unit draw distance. Part of 
 <p><small>FPS, lows, latency and frames are from PresentMon. * With Sqooky's engine settings the game's own counter undercounts frames, so its figure is wrong.</small></p>
 </details>
 <details>
-<summary>Earlier fix (2026-10-12)</summary>
+<summary>Earlier fix (2026-10-12) <span class="nopm">Not PresentMon</span></summary>
 <p>The previous round found three settings in Hantu's own config that switched off parts of the game's parallel processing. Putting them back to stock raised it from
-101.8 to 110.0 FPS (+8.1%). That fix is part of the Hantu's config tested above.</p>
+101.8 to 110.0 FPS (+8.1%). That fix is part of the Hantu's config tested above. Measured the previous day with the game's
+frame counter on Hantu's config only, which counts correctly there; no lows or latency.</p>
 <div class="table-wrap"><table>
 <thead><tr><th scope="col">Setting</th><th scope="col" class="num">Cost</th><th scope="col" class="num">Was</th><th scope="col" class="num">Now</th></tr></thead>
 <tbody><tr><th scope="row"><code>iv_parallel_restore</code></th><td class="num flag">-3.3%</td><td class="num">0</td><td class="num">1</td></tr><tr><th scope="row"><code>animgraph_parallel_postdataupdate</code></th><td class="num flag">-2.8%</td><td class="num">false</td><td class="num">true (default)</td></tr><tr><th scope="row"><code>cl_interp_parallel</code></th><td class="num flag">-2.4%</td><td class="num">0</td><td class="num">1</td></tr></tbody></table></div>
